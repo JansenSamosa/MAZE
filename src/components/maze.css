@@ -1,0 +1,12 @@
+.parent {
+    position: relative;
+    overflow: auto;
+}
+.grid {  
+    margin:auto;
+}
+.grid-cell {
+    width: 30px;
+    height: 30px;
+    float: left;
+}
