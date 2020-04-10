@@ -75,9 +75,9 @@ export class App extends Component {
           <input type='range' min='1' max='100' value={this.state.zoom} onChange={e => this.setState({...this.state, zoom: e.target.value})}/>
         </form>
         <pre style={{clear: 'both'}}/>
+        {this.renderWin()}
         {this.generateMaze()}
         {this.startPathfinding()}
-        {this.renderWin()}
       </div>
     )
   }
