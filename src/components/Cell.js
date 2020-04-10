@@ -8,6 +8,15 @@ export class Cell extends Component {
             return null
         }
     }
+    shouldComponentUpdate(nextProps) {
+        const isCurrent = this.props.cell === this.props.stackLast ? true : false
+        const willBeCurrent = nextProps.cell === nextProps.stackLast ? true : false
+        if(isCurrent || willBeCurrent || this.props.cell !== nextProps.cell || this.props.borderWidth !== nextProps.borderWidth) {
+            return true
+        } else {
+            return false
+        }
+    }
     walls = () => { 
         let style = null
         const isCurrent = this.props.cell === this.props.stackLast ? true : false

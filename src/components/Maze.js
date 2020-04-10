@@ -78,7 +78,12 @@ export class Maze extends Component {
             return <div>
                 {this.props.grid.map(row => (
                     row.map(column => (
-                        <Cell borderWidth={this.props.borderWidth} cell={column} key={column.id} player={this.state.player} finishedGen={this.props.finishedGen} stackLast={this.props.stack[this.props.stack.length-1]}/>
+                        <Cell 
+                            borderWidth={this.props.borderWidth} 
+                            cell={column} key={column.id} 
+                            player={this.state.player} 
+                            finishedGen={this.props.finishedGen} 
+                            stackLast={this.props.stack[this.props.stack.length-1]}/>
                     ))
                 ))}
             </div>
