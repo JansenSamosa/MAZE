@@ -70,7 +70,7 @@ export class Maze extends Component {
             return <div>
                         {this.props.grid.map(row => (
                             row.map(column => (
-                                <CellPerf setWin={this.props.setWin} rows={this.props.rows} columns={this.props.columns} cell={column} key={column.id} player={this.state.player} finishedGen={this.props.finishedGen}/>
+                                <CellPerf borderWidth={this.props.borderWidth} setWin={this.props.setWin} rows={this.props.rows} columns={this.props.columns} cell={column} key={column.id} player={this.state.player} finishedGen={this.props.finishedGen}/>
                             ))
                         ))}
                     </div>
@@ -78,7 +78,7 @@ export class Maze extends Component {
             return <div>
                 {this.props.grid.map(row => (
                     row.map(column => (
-                        <Cell cell={column} key={column.id} player={this.state.player} finishedGen={this.props.finishedGen} stackLast={this.props.stack[this.props.stack.length-1]}/>
+                        <Cell borderWidth={this.props.borderWidth} cell={column} key={column.id} player={this.state.player} finishedGen={this.props.finishedGen} stackLast={this.props.stack[this.props.stack.length-1]}/>
                     ))
                 ))}
             </div>

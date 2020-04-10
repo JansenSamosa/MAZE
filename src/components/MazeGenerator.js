@@ -37,7 +37,7 @@ export class MazeGenerator extends Component {
         }
     }
     shouldComponentUpdate(nextProps) {
-        if(this.props.zoom !== nextProps.zoom) {
+        if(this.props.zoom !== nextProps.zoom || this.props.borderWidth !== nextProps.borderWidth) {
             return true
         } else {
             return false
@@ -201,7 +201,7 @@ export class MazeGenerator extends Component {
     }
     renderMaze = () => {
         if(this.state.finishedGen || this.props.showProcess) {
-            return <Maze zoom={this.props.zoom} setWin={this.props.setWin} stack={this.state.stack} grid={this.state.grid} rows={this.props.rows} columns={this.props.columns} finishedGen={this.state.finishedGen}/> 
+            return <Maze borderWidth={this.props.borderWidth} zoom={this.props.zoom} setWin={this.props.setWin} stack={this.state.stack} grid={this.state.grid} rows={this.props.rows} columns={this.props.columns} finishedGen={this.state.finishedGen}/> 
         } else {
             return null
         }

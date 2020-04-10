@@ -21,10 +21,10 @@ export class Cell extends Component {
             borderColor='black'
             backgroundColor='white'
         }
-        const borderTop =  this.props.cell.state[0] === '1' ? `.5px solid ${borderColor}`: `.5px solid ${backgroundColor}`
-        const borderBottom = this.props.cell.state[1] === '1' ? `.5px solid ${borderColor}` : `.5px solid ${backgroundColor}`
-        const borderLeft = this.props.cell.state[2] === '1' ? `.5px solid ${borderColor}` : `.5px solid ${backgroundColor}`
-        const borderRight = this.props.cell.state[3] === '1' ? `.5px solid ${borderColor}` : `.5px solid ${backgroundColor}`
+        const borderTop =  this.props.cell.state[0] === '1' ? `${this.props.borderWidth}px solid ${borderColor}`: `.5px hidden ${backgroundColor}`
+        const borderBottom = this.props.cell.state[1] === '1' ? `${this.props.borderWidth}px solid ${borderColor}` : `.5px hidden ${backgroundColor}`
+        const borderLeft = this.props.cell.state[2] === '1' ? `${this.props.borderWidth}px solid ${borderColor}` : `.5px hidden ${backgroundColor}`
+        const borderRight = this.props.cell.state[3] === '1' ? `${this.props.borderWidth}px solid ${borderColor}` : `.5px hidden ${backgroundColor}`
 
         
         style = {backgroundColor, borderTop, borderBottom, borderLeft, borderRight, ...this.clearFloat()}

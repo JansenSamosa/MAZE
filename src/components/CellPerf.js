@@ -15,7 +15,9 @@ export class CellPerf extends Component {
 
         if(isPlayer || willBePlayer) {
             return true
-        } else return false
+        } else if(this.props.borderWidth !== nextProps.borderWidth) {
+            return true
+        }else return false
     }
     componentDidUpdate() {
         
@@ -34,10 +36,10 @@ export class CellPerf extends Component {
             console.log("Win!")
             this.props.setWin()
         }
-        const borderTop =  this.props.cell.state[0] === '1' ? `.5px solid black`: `.5px solid white`
-        const borderBottom = this.props.cell.state[1] === '1' ? `.5px solid black` : `.5px solid white`
-        const borderLeft = this.props.cell.state[2] === '1' ? `.5px solid black` : `.5px solid white`
-        const borderRight = this.props.cell.state[3] === '1' ? `.5px solid black` : `.5px solid white`
+        const borderTop =  this.props.cell.state[0] === '1' ? `${this.props.borderWidth}px solid black`: `2px hidden white`
+        const borderBottom = this.props.cell.state[1] === '1' ? `${this.props.borderWidth}px solid black` : `2px hidden white`
+        const borderLeft = this.props.cell.state[2] === '1' ? `${this.props.borderWidth}px solid black` : `2px hidden white`
+        const borderRight = this.props.cell.state[3] === '1' ? `${this.props.borderWidth}px solid black` : `2px hidden white`
 
         
         style = {backgroundColor, borderTop, borderBottom, borderLeft, borderRight, ...this.clearFloat()}

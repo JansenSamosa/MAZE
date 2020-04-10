@@ -13,6 +13,7 @@ export class App extends Component {
     columns: 10,
     showProcess: true,
     zoom: '100',
+    borderWidth: 1,
     startGen: true,
     win: false,
     grid: null
@@ -37,7 +38,8 @@ export class App extends Component {
             columns={this.state.columns} 
             rows={this.state.rows} 
             showProcess={this.state.showProcess}
-            zoom={this.state.zoom}/>
+            zoom={this.state.zoom}
+            borderWidth={this.state.borderWidth}/>
     }
   }
   startPathfinding = () => {
@@ -64,6 +66,7 @@ export class App extends Component {
           <input type='number' placeholder='rows' value={this.state.rows} onChange={e => this.setState({...this.state, rows: e.target.value})}/>
           <input type='number' placeholder='columns' value={this.state.columns} onChange={e => this.setState({...this.state, columns: e.target.value})}/>
           <input type='text' placeholder='seed' value={this.state.seed} onChange={e => this.setState({...this.state, seed: e.target.value})}/>
+          <input type='number' placeholder='Border Width' value={this.state.borderWidth} onChange={e => this.setState({...this.state, borderWidth: e.target.value})}/>
           <input type='submit' value='Generate Maze' onClick={e => this.generate(e)}/>
           <input type='submit' value='Restart' onClick={e => this.restart(e)}/>
           <br />
