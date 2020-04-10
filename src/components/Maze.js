@@ -18,7 +18,9 @@ export class Maze extends Component {
             }
         }
     }
-
+    shouldComponentUpdate(nextProps) {
+        return nextProps === this.props ? false : true
+    }
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeyDown.bind(this))
         this.setState({...this.state, player:{...this.state.player, canGo: this.checkWalls(this.state.player)}})
@@ -67,15 +69,15 @@ export class Maze extends Component {
     }
     renderMaze = () => {
         if(this.props.finishedGen) {
-            return <div>
+            return <React.Fragment>
                         {this.props.grid.map(row => (
                             row.map(column => (
                                 <CellPerf borderWidth={this.props.borderWidth} setWin={this.props.setWin} rows={this.props.rows} columns={this.props.columns} cell={column} key={column.id} player={this.state.player} finishedGen={this.props.finishedGen}/>
                             ))
                         ))}
-                    </div>
+                    </React.Fragment>
         }else {
-            return <div>
+            return <React.Fragment>
                 {this.props.grid.map(row => (
                     row.map(column => (
                         <Cell 
@@ -86,7 +88,7 @@ export class Maze extends Component {
                             stackLast={this.props.stack[this.props.stack.length-1]}/>
                     ))
                 ))}
-            </div>
+            </React.Fragment>
         }
     }
     render() {

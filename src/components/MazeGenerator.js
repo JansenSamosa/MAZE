@@ -154,7 +154,6 @@ export class MazeGenerator extends Component {
         let num = 0
         const alg = setInterval(() => {
             console.log(num)
-            for(let i=0;i<1;i++) {
             let stack = this.state.stack
             let currentCell = stack[stack.length - 1]
             let neighbors = this.getNeighbors(currentCell.row - 1, currentCell.column - 1)
@@ -181,7 +180,6 @@ export class MazeGenerator extends Component {
                 clearInterval(alg)
             }
             num++
-            }
             this.forceUpdate()
         }, 1);
     }

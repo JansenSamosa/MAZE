@@ -9,8 +9,8 @@ import './App.css';
 export class App extends Component {
   state = {
     seed: '',
-    rows: 10,
-    columns: 10,
+    rows: 30,
+    columns: 50,
     showProcess: true,
     zoom: '100',
     borderWidth: 1,
