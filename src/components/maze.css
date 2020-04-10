@@ -1,6 +1,8 @@
 .parent {
     position: relative;
     overflow: auto;
+    margin-bottom:500px;
+    margin-top:50px;
 }
 .grid {  
     margin:auto;

@@ -86,7 +86,7 @@ export class Maze extends Component {
     }
     render() {
         return (
-            <div className='parent'>
+            <div className='parent' style={{zoom:`${this.props.zoom}%`}}>
                 <div className='grid' style={{width:`${30 * this.props.columns + 100}px`}}>
                     {this.renderMaze()}
                 </div>

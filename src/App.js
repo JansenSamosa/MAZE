@@ -12,6 +12,7 @@ export class App extends Component {
     rows: 10,
     columns: 10,
     showProcess: true,
+    zoom: '100',
     startGen: true,
     win: false,
     grid: null
@@ -35,7 +36,8 @@ export class App extends Component {
             seed={this.state.seed}
             columns={this.state.columns} 
             rows={this.state.rows} 
-            showProcess={this.state.showProcess}/>
+            showProcess={this.state.showProcess}
+            zoom={this.state.zoom}/>
     }
   }
   startPathfinding = () => {
@@ -66,8 +68,10 @@ export class App extends Component {
           <input type='submit' value='Restart' onClick={e => this.restart(e)}/>
           <br />
           <input type='checkbox' checked={this.state.showProcess} style={{float: 'left'}} onChange={e => this.setState({...this.state, showProcess: e.target.checked})}/>
-          <p style={{clear: 'left', fontSize: '13px'}}>Show Process</p>
+          <p style={{float:'left', fontSize: '13px', position: 'relative', bottom:'13px'}}>Show Process</p>
+          <input type='range' min='1' max='100' value={this.state.zoom} onChange={e => this.setState({...this.state, zoom: e.target.value})}/>
         </form>
+        <pre style={{clear: 'both'}}/>
         {this.generateMaze()}
         {this.startPathfinding()}
         {this.renderWin()}
