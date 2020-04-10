@@ -18,8 +18,9 @@ export class Maze extends Component {
             }
         }
     }
-    shouldComponentUpdate(nextProps) {
-        return nextProps === this.props ? false : true
+    shouldComponentUpdate(nextProps, nextState) {
+        if(this.props === nextProps && this.state === nextState) return false
+        else return true
     }
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeyDown.bind(this))
