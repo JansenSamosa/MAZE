@@ -13,3 +13,12 @@
     float: left;
     box-sizing: border-box;
 }
+.node {
+    width: 50%;
+    height: 50%;
+    border-radius: 100%;
+    background-color: grey;
+    margin: auto;
+    position: relative;
+    top: 7px;
+}

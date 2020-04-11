@@ -19,7 +19,7 @@ export class MazeGenerator extends Component {
                 if(!grid[r]) grid[r] = []
                 const rowstart = true ? c === 0: false
                 grid[r][c] = {
-                    id: `r${r+1}c${c+1}`,
+                    id: `CELL${r+1}-${c+1}`,
                     row: r+1,
                     column: c+1,
                     visited: false,
@@ -37,7 +37,7 @@ export class MazeGenerator extends Component {
         }
     }
     shouldComponentUpdate(nextProps) {
-        if(this.props.zoom !== nextProps.zoom || this.props.borderWidth !== nextProps.borderWidth) {
+        if(this.props.zoom !== nextProps.zoom || this.props.borderWidth !== nextProps.borderWidth || this.props.nodes !== nextProps.nodes || this.props.showNodes !== nextProps.showNodes) {
             return true
         } else {
             return false
@@ -153,7 +153,7 @@ export class MazeGenerator extends Component {
         //RECURSIVE BACKTRACKER ALGORITHM
         let num = 0
         const alg = setInterval(() => {
-            console.log(num)
+            //console.log(num)
             let stack = this.state.stack
             let currentCell = stack[stack.length - 1]
             let neighbors = this.getNeighbors(currentCell.row - 1, currentCell.column - 1)
@@ -199,7 +199,17 @@ export class MazeGenerator extends Component {
     }
     renderMaze = () => {
         if(this.state.finishedGen || this.props.showProcess) {
-            return <Maze borderWidth={this.props.borderWidth} zoom={this.props.zoom} setWin={this.props.setWin} stack={this.state.stack} grid={this.state.grid} rows={this.props.rows} columns={this.props.columns} finishedGen={this.state.finishedGen}/> 
+            return <Maze 
+                    borderWidth={this.props.borderWidth} 
+                    zoom={this.props.zoom} 
+                    setWin={this.props.setWin} 
+                    stack={this.state.stack} 
+                    grid={this.state.grid} 
+                    rows={this.props.rows} 
+                    columns={this.props.columns} 
+                    finishedGen={this.state.finishedGen}
+                    nodes={this.props.nodes}
+                    showNodes={this.props.showNodes}/> 
         } else {
             return null
         }

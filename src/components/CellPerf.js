@@ -12,12 +12,16 @@ export class CellPerf extends Component {
         let isPlayer = this.props.player.x === this.props.cell.column - 1 && this.props.player.y === this.props.cell.row - 1 ? true : false
         let willBePlayer = nextProps.player.x === nextProps.cell.column - 1 && nextProps.player.y === nextProps.cell.row - 1 ? true : false
         
-
+        
         if(isPlayer || willBePlayer) {
             return true
         } else if(this.props.borderWidth !== nextProps.borderWidth) {
             return true
-        }else return false
+        } else if (this.props.nodes !== nextProps.nodes) {
+            return true
+        } else if (this.props.showNodes !== nextProps.showNodes) {
+            return true
+        } else return false
     }
     componentDidUpdate() {
         
@@ -45,9 +49,25 @@ export class CellPerf extends Component {
         style = {backgroundColor, borderTop, borderBottom, borderLeft, borderRight, ...this.clearFloat()}
         return style
     }
+    renderNode = () => {
+        if(this.props.showNodes) {
+            console.log("ASD")    
+            const nodes = this.props.nodes
+            if(nodes !== null) {
+                for(let i = 0; i < nodes.length; i++) {
+                    if(nodes[i].id === `NODE${this.props.cell.row}-${this.props.cell.column}`) {
+                        if(nodes[i].highlighted) {
+                            return <div className='node' style={{backgroundColor: 'black'}} onMouseOver={() => console.log(nodes[i])}/>
+                        } else return <div className='node' onMouseOver={() => console.log(nodes[i])}/>
+                    }
+                }
+            } else return null
+        }
+    }
     render() {
         return (
             <div className='grid-cell' style={this.walls()}>
+                {this.renderNode()}
             </div>
         )
     }

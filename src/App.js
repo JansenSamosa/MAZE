@@ -8,7 +8,7 @@ import './App.css';
 
 export class App extends Component {
   state = {
-    seed: '',
+    seed: 'ASDA',
     rows: 15,
     columns: 15,
     showProcess: true,
@@ -16,10 +16,15 @@ export class App extends Component {
     borderWidth: 1,
     startGen: true,
     win: false,
-    grid: null
+    grid: null,
+    nodes: null,
+    showNodes: false
   }
   setGrid = grid => {
     this.setState({...this.state, grid})
+  }
+  setNodes = nodes => {
+    this.setState({...this.state, nodes})
   }
   setWin = () => {
     this.setState({...this.state, win: true})
@@ -39,12 +44,18 @@ export class App extends Component {
             rows={this.state.rows} 
             showProcess={this.state.showProcess}
             zoom={this.state.zoom}
-            borderWidth={this.state.borderWidth}/>
+            borderWidth={this.state.borderWidth}
+            nodes={this.state.nodes}
+            showNodes={this.state.showNodes}/>
     }
   }
   startPathfinding = () => {
     if(this.state.grid !== null) {
-      return <Pathfinding grid={this.state.grid} rows={this.state.rows} columns={this.state.columns}/>
+      return <Pathfinding 
+              grid={this.state.grid} 
+              rows={this.state.rows} 
+              columns={this.state.columns}
+              setNodes={this.setNodes.bind(this)}/>
     }
   }
   generate = e => {
@@ -53,7 +64,7 @@ export class App extends Component {
   }
   restart = e => {
     e.preventDefault()
-    this.setState({...this.state, startGen: false, win: false, grid: null})
+    this.setState({...this.state, startGen: false, win: false, grid: null, nodes: null})
     this.timeout = setTimeout(() => {
       this.generate(e)
     }, 50)
@@ -72,6 +83,8 @@ export class App extends Component {
           <br />
           <input type='checkbox' checked={this.state.showProcess} style={{float: 'left'}} onChange={e => this.setState({...this.state, showProcess: e.target.checked})}/>
           <p style={{float:'left', fontSize: '13px', position: 'relative', bottom:'13px'}}>Show Process</p>
+          <input type='checkbox' checked={this.state.showNodes} style={{float: 'left'}} onChange={e => this.setState({...this.state, showNodes: e.target.checked})}/>
+          <p style={{float:'left', fontSize: '13px', position: 'relative', bottom:'13px'}}>Show PF Nodes</p>
           <input type='range' min='1' max='100' value={this.state.zoom} onChange={e => this.setState({...this.state, zoom: e.target.value})}/>
         </form>
         <pre style={{clear: 'both'}}/>

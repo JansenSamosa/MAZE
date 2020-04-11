@@ -5,8 +5,17 @@ export class Pathfinding extends Component {
         super(props)
         
         this.state = {
-            nodes: this.createNodes()
+            nodes: this.createNodes(),
+            queue: []
         }
+    }
+    componentDidMount() { 
+        this.props.setNodes(this.state.nodes)
+        this.startFloodfill()
+    }
+    shouldComponentUpdate(nextProps) {
+        if(this.props.grid !== nextProps.grid) return true
+        else return false
     }
     createNodes = () => {
         let nodes = []
@@ -21,29 +30,25 @@ export class Pathfinding extends Component {
             const horizOpen = state[2] == 0 || state[3] == 0 ? true : false
             let createNode = vertOpen && horizOpen ? true : false
 
-            if(cell.row === 1 && cell.column === this.props.columns) createNode = true
-            if(cell.row === this.props.rows && cell.column === 0) createNode = true
+            if(cell.row === 1 && cell.column === this.props.columns) createNode = true //starting node
+            if(cell.row === this.props.rows && cell.column === 1) createNode = true //goal node
 
             if(createNode) {
                 const h = Math.floor(Math.sqrt(  
                     (cell.column - 1)*(cell.column - 1) + (cell.row - this.props.rows)*(cell.row - this.props.rows) 
                 ) * 10)
                 return {
-                    id: `${cell.row}-${cell.column}`,
+                    id: `NODE${cell.row}-${cell.column}`,
                     row: cell.row,
                     column: cell.column,
                     connections: [],
-                    pathTo: [],
-                    g: null,
-                    h,
-                    totalCost: null //g + h
+                    distance: null, //FLOODFILL ALG - distance from goal node
+                    highlighted: false
                 }
             }
         })
         nodes = nodes.filter(node => node !== undefined)
         nodes = this.createNodeConnections(nodes)
-
-        console.log(nodes)
         return nodes
     }
     createNodeConnections = nodes => {
@@ -126,6 +131,64 @@ export class Pathfinding extends Component {
             hasConn = false
         }
         return hasConn
+    }
+    setNodeDistance = (nodeid, d) => {
+        const nodes = new Array(...this.state.nodes)
+
+        for(let i = 0; i < nodes.length; i++) {
+            if(nodes[i].id === nodeid) {
+                nodes[i].distance = d
+                this.setState({...this.state, nodes})
+                return null
+            }
+        }
+    }
+    highlightNode = (nodeid) => {
+        const nodes = new Array(...this.state.nodes)
+        for(let i = 0; i < nodes.length; i++) {
+            if(nodes[i].id === nodeid) {
+                nodes[i].highlighted = true
+            } else {
+                nodes[i].highlighted = false
+            }
+        }
+        this.setState({...this.state, nodes})
+    }
+    getNode = (nodeid) => {
+        const nodes = this.state.nodes
+        for(let i = 0; i < nodes.length; i++) {
+            if(nodes[i].id === nodeid) {
+                return nodes[i]
+            }
+        }
+    }
+    startFloodfill = () => {
+        this.setNodeDistance(`NODE${this.props.rows}-1`, 0)
+        const newQueue = [this.state.nodes.filter(node => node.id === `NODE${this.props.rows}-1`)[0]] //sets goal node as only value in queue
+
+        this.setState({...this.state, queue: newQueue})
+
+        let num = 0
+        const alg = setInterval(() => {
+            let newQueue = new Array(...this.state.queue)
+            const currentNode = newQueue[0]
+            this.highlightNode(currentNode.id)
+            console.log(newQueue)
+            const neighbors = currentNode.connections.filter(node => this.getNode(node.nodeid).distance === null)
+            for(let i = 0; i < neighbors.length; i++) {
+                this.setNodeDistance(neighbors[i].nodeid, currentNode.distance + neighbors[i].distance)
+                newQueue.push(this.getNode(neighbors[i].nodeid))
+            }
+            newQueue.shift()
+            this.setState({...this.state, queue: newQueue})
+            if(newQueue.length === 0) {
+                clearInterval(alg)
+                this.highlightNode('asd')
+            }
+            num++
+            this.props.setNodes(this.state.nodes)
+            this.forceUpdate()
+        }, 1)
     }
     render() {
         return (
