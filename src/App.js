@@ -80,7 +80,7 @@ export class App extends Component {
           <input type='text' placeholder='seed' value={this.state.seed} onChange={e => this.setState({...this.state, seed: e.target.value})}/>
           <input type='number' placeholder='Border Width' value={this.state.borderWidth} onChange={e => this.setState({...this.state, borderWidth: e.target.value})}/>
           <input type='submit' value='Generate Maze' onClick={e => this.generate(e)}/>
-          <input type='submit' value='Restart' onClick={e => this.restart(e)}/>
+          <input type='submit' value='Restart' onClick={e => {e.persist(); this.restart(e)}}/>
           <br />
           <input type='checkbox' checked={this.state.showProcess} style={{float: 'left'}} onChange={e => this.setState({...this.state, showProcess: e.target.checked})}/>
           <p style={{float:'left', fontSize: '13px', position: 'relative', bottom:'13px'}}>Show Process</p>
