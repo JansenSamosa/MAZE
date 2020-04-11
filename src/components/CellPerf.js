@@ -17,7 +17,7 @@ export class CellPerf extends Component {
             return true
         } else if(this.props.borderWidth !== nextProps.borderWidth) {
             return true
-        } else if (this.props.nodes !== nextProps.nodes) {
+        } else if (this.props.nodes !== nextProps.nodes && this.props.showNodes) {
             return true
         } else if (this.props.showNodes !== nextProps.showNodes) {
             return true
@@ -50,8 +50,7 @@ export class CellPerf extends Component {
         return style
     }
     renderNode = () => {
-        if(this.props.showNodes) {
-            console.log("ASD")    
+        if(this.props.showNodes) {    
             const nodes = this.props.nodes
             if(nodes !== null) {
                 for(let i = 0; i < nodes.length; i++) {
