@@ -56,8 +56,11 @@ export class CellPerf extends Component {
                 for(let i = 0; i < nodes.length; i++) {
                     if(nodes[i].id === `NODE${this.props.cell.row}-${this.props.cell.column}`) {
                         if(nodes[i].highlighted) {
-                            return <div className='node' style={{backgroundColor: 'black'}} onMouseOver={() => console.log(nodes[i])}/>
-                        } else return <div className='node' onMouseOver={() => console.log(nodes[i])}/>
+                            return <div className='node' style={{backgroundColor: 'black', zIndex:'2'}} onMouseOver={() => console.log(nodes[i])}/>
+                        } else {
+                            return null
+                            //<div className='node' onMouseOver={() => console.log(nodes[i])}/>
+                        }
                     }
                 }
             } else return null

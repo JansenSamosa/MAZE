@@ -8,7 +8,7 @@ import './App.css';
 
 export class App extends Component {
   state = {
-    seed: 'ASDA',
+    seed: '',
     rows: 15,
     columns: 15,
     showProcess: true,

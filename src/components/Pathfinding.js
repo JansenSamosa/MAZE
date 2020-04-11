@@ -6,7 +6,8 @@ export class Pathfinding extends Component {
         
         this.state = {
             nodes: this.createNodes(),
-            queue: []
+            queue: [],
+            path: []
         }
     }
     componentDidMount() { 
@@ -143,13 +144,15 @@ export class Pathfinding extends Component {
             }
         }
     }
-    highlightNode = (nodeid) => {
+    highlightNode = (nodeid, one) => {
         const nodes = new Array(...this.state.nodes)
         for(let i = 0; i < nodes.length; i++) {
             if(nodes[i].id === nodeid) {
                 nodes[i].highlighted = true
             } else {
-                nodes[i].highlighted = false
+                if(one) {
+                    nodes[i].highlighted = false
+                }
             }
         }
         this.setState({...this.state, nodes})
@@ -172,8 +175,7 @@ export class Pathfinding extends Component {
         const alg = setInterval(() => {
             let newQueue = new Array(...this.state.queue)
             const currentNode = newQueue[0]
-            this.highlightNode(currentNode.id)
-            console.log(newQueue)
+            this.highlightNode(currentNode.id, true)
             const neighbors = currentNode.connections.filter(node => this.getNode(node.nodeid).distance === null)
             for(let i = 0; i < neighbors.length; i++) {
                 this.setNodeDistance(neighbors[i].nodeid, currentNode.distance + neighbors[i].distance)
@@ -183,12 +185,41 @@ export class Pathfinding extends Component {
             this.setState({...this.state, queue: newQueue})
             if(newQueue.length === 0) {
                 clearInterval(alg)
-                this.highlightNode('asd')
+                this.highlightNode('asd', true)
+                this.getQuickestPath(`NODE1-${this.props.columns}`)
             }
             num++
             this.props.setNodes(this.state.nodes)
             this.forceUpdate()
         }, 1)
+    }
+    getQuickestPath = (startNodeid) => {
+        const startNode = this.state.nodes.filter(node => node.id === startNodeid)[0]
+        let path = [startNode]
+
+        let num = 0
+        const alg = setInterval(() => {
+            console.log(num)
+            const currentNode = path[path.length-1]
+            const neighbors = currentNode.connections
+            let lowest = {distance: 999999}
+            for(let i = 0; i < neighbors.length; i++) {
+                console.log(neighbors[i].nodeid)
+                const node = this.getNode(neighbors[i].nodeid)
+                if(node.distance < lowest.distance) {
+                    lowest = node
+                }
+            }
+            path.push(lowest)
+            if(lowest.distance === 0) {
+                clearInterval(alg)
+                console.log(path)
+            }
+            num++
+            this.highlightNode(currentNode.id, false)
+            this.props.setNodes(this.state.nodes)
+        }, 1)
+        this.setState({...this.state, path})
     }
     render() {
         return (
