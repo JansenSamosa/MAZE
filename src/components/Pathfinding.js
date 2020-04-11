@@ -172,7 +172,8 @@ export class Pathfinding extends Component {
         this.setState({...this.state, queue: newQueue})
 
         let num = 0
-        const alg = setInterval(() => {
+        this.alg = setInterval(() => {
+            console.log(num)
             let newQueue = new Array(...this.state.queue)
             const currentNode = newQueue[0]
             this.highlightNode(currentNode.id, true)
@@ -184,9 +185,9 @@ export class Pathfinding extends Component {
             newQueue.shift()
             this.setState({...this.state, queue: newQueue})
             if(newQueue.length === 0) {
-                clearInterval(alg)
                 this.highlightNode('asd', true)
                 this.getQuickestPath(`NODE1-${this.props.columns}`)
+                clearInterval(this.alg)
             }
             num++
             this.props.setNodes(this.state.nodes)
@@ -200,7 +201,8 @@ export class Pathfinding extends Component {
         this.highlightNode('asd', true)
 
         let num = 0
-        const alg = setInterval(() => {
+        this.alg2 = setInterval(() => {
+            console.log(path)
             const currentNode = path[path.length-1]
             const neighbors = currentNode.connections
             let lowest = {distance: 999999}
@@ -212,9 +214,9 @@ export class Pathfinding extends Component {
             }
             path.push(lowest)
             if(lowest.distance === 0) {
-                clearInterval(alg)
                 console.log("Done! :D")
                 this.setState({...this.state, path})
+                clearInterval(this.alg2)
             }
             num++
             this.highlightNode(currentNode.id, false)
@@ -228,6 +230,10 @@ export class Pathfinding extends Component {
             </div>
         )
     }
+    componentWillUnmount() {
+        console.log("ASFOIHSAD")
+        clearInterval(this.alg)
+        clearInterval(this.alg2)
+    }
 }
-
 export default Pathfinding

@@ -152,7 +152,7 @@ export class MazeGenerator extends Component {
     algorithm = () => {
         //RECURSIVE BACKTRACKER ALGORITHM
         let num = 0
-        const alg = setInterval(() => {
+        this.alg = setInterval(() => {
             //console.log(num)
             let stack = this.state.stack
             let currentCell = stack[stack.length - 1]
@@ -177,7 +177,7 @@ export class MazeGenerator extends Component {
             this.setState({...this.state, stack})
             if(this.state.stack.length === 0) {
                 this.setState({...this.state, finishedGen: true})
-                clearInterval(alg)
+                clearInterval(this.alg)
             }
             num++
             this.forceUpdate()
@@ -221,6 +221,9 @@ export class MazeGenerator extends Component {
                 {this.sendGridToApp()}
             </div>
         )
+    }
+    componentWillMount() {
+        clearInterval(this.alg)
     }
 }
 

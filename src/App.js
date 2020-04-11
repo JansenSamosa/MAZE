@@ -18,10 +18,11 @@ export class App extends Component {
     win: false,
     grid: null,
     nodes: null,
-    showNodes: true
+    showNodes: true,
+    pathfinding: false
   }
   setGrid = grid => {
-    this.setState({...this.state, grid})
+    this.setState({...this.state, grid, pathfinding: true})
   }
   setNodes = nodes => {
     this.setState({...this.state, nodes})
@@ -50,7 +51,7 @@ export class App extends Component {
     }
   }
   startPathfinding = () => {
-    if(this.state.grid !== null) {
+    if(this.state.grid !== null && this.state.pathfinding) {
       return <Pathfinding 
               grid={this.state.grid} 
               rows={this.state.rows} 
@@ -64,7 +65,7 @@ export class App extends Component {
   }
   restart = e => {
     e.preventDefault()
-    this.setState({...this.state, startGen: false, win: false, grid: null, nodes: null})
+    this.setState({...this.state, startGen: false, win: false, grid: null, nodes: null, pathfinding: false})
     this.timeout = setTimeout(() => {
       this.generate(e)
     }, 50)
