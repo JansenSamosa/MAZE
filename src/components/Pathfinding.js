@@ -197,14 +197,14 @@ export class Pathfinding extends Component {
         const startNode = this.state.nodes.filter(node => node.id === startNodeid)[0]
         let path = [startNode]
 
+        this.highlightNode('asd', true)
+
         let num = 0
         const alg = setInterval(() => {
-            console.log(num)
             const currentNode = path[path.length-1]
             const neighbors = currentNode.connections
             let lowest = {distance: 999999}
             for(let i = 0; i < neighbors.length; i++) {
-                console.log(neighbors[i].nodeid)
                 const node = this.getNode(neighbors[i].nodeid)
                 if(node.distance < lowest.distance) {
                     lowest = node
@@ -213,13 +213,13 @@ export class Pathfinding extends Component {
             path.push(lowest)
             if(lowest.distance === 0) {
                 clearInterval(alg)
-                console.log(path)
+                console.log("Done! :D")
+                this.setState({...this.state, path})
             }
             num++
             this.highlightNode(currentNode.id, false)
             this.props.setNodes(this.state.nodes)
         }, 1)
-        this.setState({...this.state, path})
     }
     render() {
         return (

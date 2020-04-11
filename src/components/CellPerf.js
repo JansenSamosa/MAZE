@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 
 export class CellPerf extends Component {
+    state = {
+        isNode: false,
+    }
     clearFloat = () => {
         if(this.props.cell.rowstart) {
             return {clear: 'left'}
@@ -17,7 +20,7 @@ export class CellPerf extends Component {
             return true
         } else if(this.props.borderWidth !== nextProps.borderWidth) {
             return true
-        } else if (this.props.nodes !== nextProps.nodes && this.props.showNodes) {
+        } else if (this.props.nodes !== nextProps.nodes && this.props.showNodes && this.props.nodes !== null) {
             return true
         } else if (this.props.showNodes !== nextProps.showNodes) {
             return true

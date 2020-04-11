@@ -18,7 +18,7 @@ export class App extends Component {
     win: false,
     grid: null,
     nodes: null,
-    showNodes: false
+    showNodes: true
   }
   setGrid = grid => {
     this.setState({...this.state, grid})
