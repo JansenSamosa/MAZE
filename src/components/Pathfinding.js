@@ -196,7 +196,7 @@ export class Pathfinding extends Component {
             let queue = new Array(...this.state.queue)
             if(queue.length > 0) {
                 const currentNode = queue[0]
-                this.highlightNode(currentNode.id, true)
+                //this.highlightNode(currentNode.id, true)
                 const neighbors = currentNode.connections.filter(node => this.getNode(node.nodeid).distance === null)
                 for(let i = 0; i < neighbors.length; i++) {
                     this.setNodeDistance(neighbors[i].nodeid, currentNode.distance + neighbors[i].distance)
