@@ -10,8 +10,8 @@ import './components/maze.css'
 export class App extends Component {
   state = {
     seed: '',
-    rows: 10,
-    columns: 10,
+    rows: 15,
+    columns: 15,
     showProcess: true,
     zoom: '100',
     borderWidth: 1,

@@ -14,7 +14,7 @@ export class Pathfinding extends Component {
         this.setState({...this.state, nodes: this.createNodes()})
         const delay = setTimeout(() => {
             this.startFloodfill()
-        }, 1000)
+        }, 100)
     }
     shouldComponentUpdate(nextProps) {
         if(this.props.grid !== nextProps.grid) return true
@@ -209,7 +209,7 @@ export class Pathfinding extends Component {
                 this.highlightNode('asd', true)
                 this.delay = setTimeout(() => {
                     this.getQuickestPath(`NODE1-${this.props.columns}`)
-                }, 1000)
+                }, 100)
                 
                 clearInterval(this.alg)
             }
