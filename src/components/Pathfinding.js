@@ -195,12 +195,7 @@ export class Pathfinding extends Component {
             console.log(num)
             let queue = new Array(...this.state.queue)
             if(queue.length > 0) {
-                console.log('this.state.nodes.filter(node => node.id === `NODE${this.props.rows}-1`)[0]', this.state.nodes.filter(node => node.id === `NODE${this.props.rows}-1`)[0])
-                console.log('this.state', this.state)
-                console.log('this.state.queue',this.state.queue)
-                console.log('queue',queue)
                 const currentNode = queue[0]
-                console.log('currentnode',currentNode)
                 this.highlightNode(currentNode.id, true)
                 const neighbors = currentNode.connections.filter(node => this.getNode(node.nodeid).distance === null)
                 for(let i = 0; i < neighbors.length; i++) {
@@ -219,7 +214,7 @@ export class Pathfinding extends Component {
                 clearInterval(this.alg)
             }
             num++
-            this.props.setNodes(this.state.nodes)
+            this.props.setNodes(this.state.nodes, null)
             this.forceUpdate()
         }, 1)
     }
@@ -233,13 +228,7 @@ export class Pathfinding extends Component {
 
         let num = 0
         this.alg2 = setInterval(() => {
-            console.log(num)
-            console.log('this.state',this.state)
-            console.log('this.state.nodes',this.state.nodes)
-            console.log('startnode',startNode)
-            console.log('path',path)
             const currentNode = path[path.length-1]
-            console.log(currentNode)
             const neighbors = currentNode.connections
             let lowest = {distance: 999999}
             for(let i = 0; i < neighbors.length; i++) {
@@ -260,6 +249,7 @@ export class Pathfinding extends Component {
     }
     highlightPath = () => {
         const path = this.state.path
+        let tempPath = []
         console.log(path)
         let i = 0
         this.highlightP = setInterval(() => {
@@ -267,8 +257,9 @@ export class Pathfinding extends Component {
                 console.log(i)
                 clearInterval(this.highlightP)
             }
+            tempPath.push(path[i])
             this.highlightNode(path[i].id, false)
-            this.props.setNodes(this.state.nodes)
+            this.props.setNodes(this.state.nodes, tempPath)
             i++
         }, 1)
     }

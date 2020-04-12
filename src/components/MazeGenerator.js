@@ -37,7 +37,8 @@ export class MazeGenerator extends Component {
         }
     }
     shouldComponentUpdate(nextProps) {
-        if(this.props.zoom !== nextProps.zoom || this.props.borderWidth !== nextProps.borderWidth || this.props.nodes !== nextProps.nodes || this.props.showNodes !== nextProps.showNodes) {
+        if(this.props.zoom !== nextProps.zoom || this.props.borderWidth !== nextProps.borderWidth || this.props.nodes !== nextProps.nodes || this.props.showNodes !== nextProps.showNodes
+            || this.props.path !== nextProps.path) {
             return true
         } else {
             return false
@@ -209,6 +210,7 @@ export class MazeGenerator extends Component {
                     columns={this.props.columns} 
                     finishedGen={this.state.finishedGen}
                     nodes={this.props.nodes}
+                    path={this.props.path}
                     showNodes={this.props.showNodes}/> 
         } else {
             return null

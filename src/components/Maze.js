@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Cell from './Cell'
 import CellPerf from './CellPerf'
+import Nodes from './Nodes'
 
 import './maze.css'
 
@@ -16,7 +17,7 @@ export class Maze extends Component {
                 left: true,
                 right: true
             }
-        }
+        },
     }
     shouldComponentUpdate(nextProps, nextState) {
         if(this.props === nextProps && this.state === nextState) return false
@@ -103,12 +104,16 @@ export class Maze extends Component {
             </React.Fragment>
         }
     }
+
     render() {
         return (
-            <div className='parent' style={{zoom:`${this.props.zoom}%`}}>
-                <div className='grid' style={{width:`${30 * this.props.columns + 100}px`}}>
-                    {this.renderMaze()}
+            <div style={{zoom:`${this.props.zoom}%`}}>
+                <div className='parent' >
+                    <div className='grid' style={{width:`${30 * this.props.columns + 100}px`}}>
+                        {this.renderMaze()}
+                    </div>
                 </div>
+                <Nodes nodes={this.props.nodes} path={this.props.path} zoom={this.props.zoom} showNodes={this.props.showNodes}/>
             </div>
         )
     }

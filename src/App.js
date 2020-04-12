@@ -5,12 +5,13 @@ import MazeGenerator from './components/MazeGenerator.js'
 import Pathfinding from './components/Pathfinding'
 
 import './App.css';
+import './components/maze.css'
 
 export class App extends Component {
   state = {
     seed: '',
-    rows: 15,
-    columns: 15,
+    rows: 10,
+    columns: 10,
     showProcess: true,
     zoom: '100',
     borderWidth: 1,
@@ -18,14 +19,16 @@ export class App extends Component {
     win: false,
     grid: null,
     nodes: null,
+    path: null,
     showNodes: true,
     pathfinding: false
   }
   setGrid = grid => {
     this.setState({...this.state, grid, pathfinding: true})
   }
-  setNodes = nodes => {
-    this.setState({...this.state, nodes})
+  setNodes = (nodes, path) => {
+    if(path) path = new Array(...path)
+    this.setState({...this.state, nodes, path})
   }
   setWin = () => {
     this.setState({...this.state, win: true})
@@ -47,6 +50,7 @@ export class App extends Component {
             zoom={this.state.zoom}
             borderWidth={this.state.borderWidth}
             nodes={this.state.nodes}
+            path={this.state.path}
             showNodes={this.state.showNodes}/>
     }
   }
@@ -65,12 +69,11 @@ export class App extends Component {
   }
   restart = e => {
     e.preventDefault()
-    this.setState({...this.state, startGen: false, win: false, grid: null, nodes: null, pathfinding: false})
+    this.setState({...this.state, startGen: false, win: false, grid: null, nodes: null, pathfinding: false, path: null})
     this.timeout = setTimeout(() => {
       this.generate(e)
     }, 50)
   }
-  
   render() {
     return (
       <div>
@@ -92,6 +95,7 @@ export class App extends Component {
         {this.renderWin()}
         {this.generateMaze()}
         {this.startPathfinding()}
+
       </div>
     )
   }

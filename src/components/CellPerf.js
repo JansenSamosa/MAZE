@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 
 export class CellPerf extends Component {
-    state = {
-        isNode: false,
-    }
     clearFloat = () => {
         if(this.props.cell.rowstart) {
             return {clear: 'left'}
@@ -39,6 +36,7 @@ export class CellPerf extends Component {
         backgroundColor = isWin === true ? 'lightgreen' : backgroundColor
         backgroundColor = isPlayer === true ? 'yellow' : backgroundColor
         
+
         if(isWin && isPlayer) {
             console.log("Win!")
             this.props.setWin()
@@ -48,31 +46,31 @@ export class CellPerf extends Component {
         const borderLeft = this.props.cell.state[2] === '1' ? `${this.props.borderWidth}px solid black` : `2px hidden white`
         const borderRight = this.props.cell.state[3] === '1' ? `${this.props.borderWidth}px solid black` : `2px hidden white`
 
-        
-        style = {backgroundColor, borderTop, borderBottom, borderLeft, borderRight, ...this.clearFloat()}
+        const zIndex = isWin || isPlayer ? '5' : null
+        style = {backgroundColor, borderTop, borderBottom, borderLeft, borderRight, zIndex, ...this.clearFloat()}
         return style
     }
-    renderNode = () => {
+    /*renderNode = () => {
         if(this.props.showNodes) {    
             const nodes = this.props.nodes
             if(nodes !== null) {
                 for(let i = 0; i < nodes.length; i++) {
                     if(nodes[i].id === `NODE${this.props.cell.row}-${this.props.cell.column}`) {
                         if(nodes[i].highlighted) {
-                            return <div className='node' style={{backgroundColor: 'black', zIndex:'2'}} onMouseOver={() => console.log(nodes[i])}/>
+                            return <div className={`node ${nodes[i].id}`} onMouseOver={() => console.log(nodes[i])}/>
                         } else {
-                            return null
+                            
                             //<div className='node' onMouseOver={() => console.log(nodes[i])}/>
                         }
                     }
                 }
-            } else return null
+            } 
         }
-    }
+    }*/
     render() {
         return (
-            <div className='grid-cell' style={this.walls()}>
-                {this.renderNode()}
+            <div className= {`grid-cell ${this.props.cell.id}`} style={this.walls()}>
+                
             </div>
         )
     }
