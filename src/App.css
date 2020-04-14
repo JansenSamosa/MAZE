@@ -31,3 +31,26 @@ input[type='number'] {
   bottom:0;
   right:-2.5em;
 }
+.screenbtns button[name='showProcess'] {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height:3em;
+  width:6em;
+  font-size: 20px;
+  border: none;
+  background-color: #e6e6e6;
+  box-shadow: 2px 2px 4px grey;
+  transition: width 150ms;
+  cursor: pointer;
+  outline: none;
+}
+.screenbtns button[name='showProcess']:hover {
+  background-color: #cccccc;
+  box-shadow: 4px 4px 4px grey;
+  width:10%;
+}
+.screenbtns button[name='showProcess']:active {
+  background-color: #bfbfbf;
+  box-shadow: 1px 1px 4px grey;
+}

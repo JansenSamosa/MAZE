@@ -146,6 +146,7 @@ export class App extends Component {
                 onMouseOut={this.endZoom}
                 onTouchStart={this.startZoom.bind(this, -2)}
                 onTouchEnd={this.endZoom}/>
+          <button onClick={() => this.setState({...this.state, showProcess: !this.state.showProcess})}name='showProcess'>SHOW/HIDE PROCESS</button>
         </div>
         {this.renderWin()}
         {this.generateMaze()}
