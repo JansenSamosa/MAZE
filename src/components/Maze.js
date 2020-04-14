@@ -25,6 +25,7 @@ export class Maze extends Component {
     }
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeyDown.bind(this))
+        this.props.setPlayer(this.state.player)
         this.setState({...this.state, player:{...this.state.player, canGo: this.checkWalls(this.state.player)}})
     }
     componentDidUpdate() {
@@ -66,7 +67,9 @@ export class Maze extends Component {
                     break
             }
             newPlayer.canGo = this.checkWalls(newPlayer)
-            this.setState({...this.state, wait: true, player:{x: newPlayer.x, y: newPlayer.y, canGo: newPlayer.canGo}})
+            this.setState({...this.state, wait: true, player:{x: newPlayer.x, y: newPlayer.y, canGo: newPlayer.canGo}}, () => {
+                this.props.setPlayer(this.state.player)
+            })
         }
     }
     renderMaze = () => {
@@ -84,7 +87,8 @@ export class Maze extends Component {
                                     player={this.state.player} 
                                     finishedGen={this.props.finishedGen}
                                     nodes={this.props.nodes}
-                                    showNodes={this.props.showNodes}/>
+                                    showNodes={this.props.showNodes}
+                                    colors={this.props.colors}/>
                             ))
                         ))}
                     </React.Fragment>
@@ -98,7 +102,8 @@ export class Maze extends Component {
                             player={this.state.player} 
                             finishedGen={this.props.finishedGen} 
                             stackLast={this.props.stack[this.props.stack.length-1]}
-                            key={column.id}/>
+                            key={column.id}
+                            colors={this.props.colors}/>
                     ))
                 ))}
             </React.Fragment>
@@ -107,13 +112,16 @@ export class Maze extends Component {
 
     render() {
         return (
-            <div style={{zoom:`${this.props.zoom}%`}}>
-                <div className='parent' >
-                    <div className='grid' style={{width:`${30 * this.props.columns + 100}px`}}>
-                        {this.renderMaze()}
+            <div>
+                <div style={{zoom:`${this.props.zoom}%`}}>
+                    <Nodes nodes={this.props.nodes} path={this.props.path} zoom={this.props.zoom} 
+                        showNodes={this.props.showNodes} colors={this.props.colors}/>
+                    <div className='parent' >
+                        <div className='grid' style={{width:`${30 * this.props.columns}px`}}>
+                            {this.renderMaze()}
+                        </div>
                     </div>
                 </div>
-                <Nodes nodes={this.props.nodes} path={this.props.path} zoom={this.props.zoom} showNodes={this.props.showNodes}/>
             </div>
         )
     }

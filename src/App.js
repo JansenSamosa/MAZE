@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
 import seedrandom from 'seedrandom'
 
+import Settings from './components/Settings'
 import MazeGenerator from './components/MazeGenerator.js'
 import Pathfinding from './components/Pathfinding'
 
 import './App.css';
 import './components/maze.css'
 
+import zoominIcon from './icons/zoomin-icon.png'
+import zoomoutIcon from './icons/zoomout-icon.png'
+
 export class App extends Component {
   state = {
     seed: '',
-    rows: 15,
-    columns: 15,
+    rows: 10,
+    columns: 10,
     showProcess: true,
     zoom: '100',
     borderWidth: 1,
@@ -21,7 +25,21 @@ export class App extends Component {
     nodes: null,
     path: null,
     showNodes: true,
-    pathfinding: false
+    pathfinding: false,
+    doneFilling: false,
+    colors: {
+      player: '#ffff00',
+      goal: '#66ff66',
+      path: '#ffb3b3',
+      cell: '#ffb3b3',
+      stackcell: '#ccd9ff',
+      visitedcell: '#e6ffe6'
+    },
+    player: null,
+    findPath: false 
+  }
+  setSettings = newState => {
+     this.setState({...this.state, ...newState})
   }
   setGrid = grid => {
     this.setState({...this.state, grid, pathfinding: true})
@@ -29,6 +47,9 @@ export class App extends Component {
   setNodes = (nodes, path) => {
     if(path) path = new Array(...path)
     this.setState({...this.state, nodes, path})
+  }
+  setPlayer = player => {
+    this.setState({...this.state, player})
   }
   setWin = () => {
     this.setState({...this.state, win: true})
@@ -38,11 +59,27 @@ export class App extends Component {
       return <p>You win!</p>
     }
   }
+  zoom = zoomfactor => {
+    if(parseInt(this.state.zoom) + zoomfactor > 0) {
+      this.setState({...this.state, zoom: `${parseInt(this.state.zoom) + zoomfactor}`, showNodes: false}, () => {
+        this.setState({...this.state, showNodes:true})
+      })
+    }
+  }
+  startZoom = zoomfactor => {
+    this.zoominterval = setInterval(() => {
+      this.zoom(zoomfactor)
+    },1)
+  }
+  endZoom = () => {
+    clearInterval(this.zoominterval)
+  }
   generateMaze = () => {
     if(this.state.startGen) {
       return <MazeGenerator 
             setGrid={this.setGrid.bind(this)} 
             setWin={this.setWin}
+            setPlayer={this.setPlayer}
             seed={this.state.seed}
             columns={this.state.columns} 
             rows={this.state.rows} 
@@ -51,7 +88,8 @@ export class App extends Component {
             borderWidth={this.state.borderWidth}
             nodes={this.state.nodes}
             path={this.state.path}
-            showNodes={this.state.showNodes}/>
+            showNodes={this.state.showNodes}
+            colors={this.state.colors}/>
     }
   }
   startPathfinding = () => {
@@ -60,42 +98,58 @@ export class App extends Component {
               grid={this.state.grid} 
               rows={this.state.rows} 
               columns={this.state.columns}
-              setNodes={this.setNodes.bind(this)}/>
+              setNodes={this.setNodes.bind(this)}
+              setSettings={this.setSettings}
+              findPath={this.state.findPath}
+              player={this.state.player}/>
     }
   }
+  
   generate = e => {
     e.preventDefault()
     this.setState({...this.state, startGen: true})
   }
   restart = e => {
     e.preventDefault()
-    this.setState({...this.state, startGen: false, win: false, grid: null, nodes: null, pathfinding: false, path: null})
+    this.setState({...this.state, startGen: false, win: false, grid: null, nodes: null, pathfinding: false, path: null, doneFilling: false})
     this.timeout = setTimeout(() => {
       this.generate(e)
     }, 50)
   }
+  findPath = () => {
+    this.setState({...this.state, findPath: true})
+  }
   render() {
     return (
       <div>
-        <form>
-          <input type='number' placeholder='rows' value={this.state.rows} onChange={e => this.setState({...this.state, rows: e.target.value})}/>
-          <input type='number' placeholder='columns' value={this.state.columns} onChange={e => this.setState({...this.state, columns: e.target.value})}/>
-          <input type='text' placeholder='seed' value={this.state.seed} onChange={e => this.setState({...this.state, seed: e.target.value})}/>
-          <input type='number' placeholder='Border Width' value={this.state.borderWidth} onChange={e => this.setState({...this.state, borderWidth: e.target.value})}/>
-          <input type='submit' value='Generate Maze' onClick={e => this.generate(e)}/>
-          <input type='submit' value='Restart' onClick={e => {e.persist(); this.restart(e)}}/>
-          <br />
-          <input type='checkbox' checked={this.state.showProcess} style={{float: 'left'}} onChange={e => this.setState({...this.state, showProcess: e.target.checked})}/>
-          <p style={{float:'left', fontSize: '13px', position: 'relative', bottom:'13px'}}>Show Process</p>
-          <input type='checkbox' checked={this.state.showNodes} style={{float: 'left'}} onChange={e => this.setState({...this.state, showNodes: e.target.checked})}/>
-          <p style={{float:'left', fontSize: '13px', position: 'relative', bottom:'13px'}}>Show PF Nodes</p>
-          <input type='range' min='1' max='100' value={this.state.zoom} onChange={e => this.setState({...this.state, zoom: e.target.value})}/>
-        </form>
-        <pre style={{clear: 'both'}}/>
+        <Settings 
+            setSettings={this.setSettings.bind(this)}
+            seed={this.state.seed}
+            columns={this.state.columns} 
+            rows={this.state.rows} 
+            borderWidth={this.state.borderWidth}
+            colors={this.state.colors}
+            restart={this.restart}
+            findPath={this.findPath}
+            doneFilling={this.state.doneFilling}
+        />
+        <div className='screenbtns'>
+          <img src={zoominIcon} name='zoomin' alt='' 
+                onMouseDown={this.startZoom.bind(this, 2)}
+                onMouseUp={this.endZoom}
+                onMouseOut={this.endZoom}
+                onTouchStart={this.startZoom.bind(this, 2)}
+                onTouchEnd={this.endZoom}/>
+          <img src={zoomoutIcon} name='zoomout' alt='' 
+                onMouseDown={this.startZoom.bind(this, -2)}
+                onMouseUp={this.endZoom}
+                onMouseOut={this.endZoom}
+                onTouchStart={this.startZoom.bind(this, -2)}
+                onTouchEnd={this.endZoom}/>
+        </div>
         {this.renderWin()}
         {this.generateMaze()}
         {this.startPathfinding()}
-
       </div>
     )
   }

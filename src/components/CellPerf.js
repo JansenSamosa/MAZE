@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import chroma from 'chroma-js'
 export class CellPerf extends Component {
     clearFloat = () => {
         if(this.props.cell.rowstart) {
@@ -21,6 +21,8 @@ export class CellPerf extends Component {
             return true
         } else if (this.props.showNodes !== nextProps.showNodes) {
             return true
+        } else if (this.props.colors !== nextProps.colors) {
+            return true
         } else return false
     }
     componentDidUpdate() {
@@ -33,8 +35,8 @@ export class CellPerf extends Component {
         let isWin = this.props.cell.column === 1 && this.props.cell.row == this.props.rows ? true : false
 
         let backgroundColor = 'white'
-        backgroundColor = isWin === true ? 'lightgreen' : backgroundColor
-        backgroundColor = isPlayer === true ? 'yellow' : backgroundColor
+        backgroundColor = isWin === true ? this.props.colors.goal : backgroundColor
+        backgroundColor = isPlayer === true ? this.props.colors.player : backgroundColor
         
 
         if(isWin && isPlayer) {
@@ -46,27 +48,11 @@ export class CellPerf extends Component {
         const borderLeft = this.props.cell.state[2] === '1' ? `${this.props.borderWidth}px solid black` : `2px hidden white`
         const borderRight = this.props.cell.state[3] === '1' ? `${this.props.borderWidth}px solid black` : `2px hidden white`
 
-        const zIndex = isWin || isPlayer ? '5' : null
+        const zIndex = isWin || isPlayer ? '10' : null
         style = {backgroundColor, borderTop, borderBottom, borderLeft, borderRight, zIndex, ...this.clearFloat()}
         return style
     }
-    /*renderNode = () => {
-        if(this.props.showNodes) {    
-            const nodes = this.props.nodes
-            if(nodes !== null) {
-                for(let i = 0; i < nodes.length; i++) {
-                    if(nodes[i].id === `NODE${this.props.cell.row}-${this.props.cell.column}`) {
-                        if(nodes[i].highlighted) {
-                            return <div className={`node ${nodes[i].id}`} onMouseOver={() => console.log(nodes[i])}/>
-                        } else {
-                            
-                            //<div className='node' onMouseOver={() => console.log(nodes[i])}/>
-                        }
-                    }
-                }
-            } 
-        }
-    }*/
+
     render() {
         return (
             <div className= {`grid-cell ${this.props.cell.id}`} style={this.walls()}>

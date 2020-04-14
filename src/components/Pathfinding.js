@@ -7,7 +7,8 @@ export class Pathfinding extends Component {
         this.state = {
             nodes: [],
             queue: [],
-            path: []
+            path: [],
+            doneFilling: false
         }
     }
     componentDidMount() { 
@@ -16,9 +17,17 @@ export class Pathfinding extends Component {
             this.startFloodfill()
         }, 100)
     }
-    shouldComponentUpdate(nextProps) {
+    shouldComponentUpdate(nextProps, nextState) {
         if(this.props.grid !== nextProps.grid) return true
+        else if(this.props.findPath !== nextProps.findPath) return true
+        else if(this.state.doneFilling !== nextState.doneFilling) return true
         else return false
+    }
+    componentDidUpdate() {
+        this.props.setSettings({doneFilling: this.state.doneFilling})
+        if(this.props.findPath) {
+            this.getQuickestPath(`NODE1-${this.props.columns}`)
+        }
     }
     createNodes = () => {
         let nodes = []
@@ -188,7 +197,7 @@ export class Pathfinding extends Component {
         this.setNodeDistance(`NODE${this.props.rows}-1`, 0)
         const newQueue = [this.state.nodes.filter(node => node.id === `NODE${this.props.rows}-1`)[0]] //sets goal node as only value in queue
 
-        this.setState({...this.state, queue: newQueue})
+        this.setState({...this.state, queue: newQueue, doneFilling:false})
 
         let num = 0
         this.alg = setInterval(() => {
@@ -207,10 +216,10 @@ export class Pathfinding extends Component {
             }
             if(queue.length === 0) {
                 this.highlightNode('asd', true)
-                this.delay = setTimeout(() => {
-                    this.getQuickestPath(`NODE1-${this.props.columns}`)
-                }, 100)
-                
+                //this.delay = setTimeout(() => {
+                //    this.getQuickestPath(`NODE1-${this.props.columns}`)
+                //}, 100)
+                this.setState({...this.state, doneFilling: true})
                 clearInterval(this.alg)
             }
             num++
@@ -218,34 +227,40 @@ export class Pathfinding extends Component {
             this.forceUpdate()
         }, 1)
     }
+    
     getQuickestPath = (startNodeid) => {
-        const startNode = this.state.nodes.filter(node => node.id === startNodeid)[0]
-        console.log(this.state.nodes)
-        console.log(startNode)
-        let path = [startNode]
+        if(this.state.doneFilling) {
+            clearInterval(this.alg2)
+            const startNode = this.state.nodes.filter(node => node.id === startNodeid)[0]
+            console.log(startNode)
+            let path = [startNode]
 
-        this.highlightNode('asd', true)
+            this.highlightNode('asd', true)
 
-        let num = 0
-        this.alg2 = setInterval(() => {
-            const currentNode = path[path.length-1]
-            const neighbors = currentNode.connections
-            let lowest = {distance: 999999}
-            for(let i = 0; i < neighbors.length; i++) {
-                const node = this.getNode(neighbors[i].nodeid)
-                if(node.distance < lowest.distance) {
-                    lowest = node
+            let num = 0
+            this.alg2 = setInterval(() => {
+                const currentNode = path[path.length-1]
+                const neighbors = currentNode.connections
+                let lowest = {distance: 999999}
+                for(let i = 0; i < neighbors.length; i++) {
+                    const node = this.getNode(neighbors[i].nodeid)
+                    if(node.distance < lowest.distance) {
+                        lowest = node
+                    }
                 }
-            }
-            path.push(lowest)
-            if(lowest.distance === 0) {
-                console.log("Done! :D")
-                this.setState({...this.state, path})
-                this.highlightPath()
-                clearInterval(this.alg2)
-            }
-            num++
-        }, 1)
+                path.push(lowest)
+                if(lowest.distance === 0) {
+                    console.log("Done! :D")
+                    this.setState({...this.state, path})
+                    this.props.setSettings({findPath: false})
+                    this.highlightPath()
+                    clearInterval(this.alg2)
+                }
+                num++
+            }, 1)
+        } else {
+            this.props.setSettings({findPath: false})
+        }
     }
     highlightPath = () => {
         const path = this.state.path
@@ -255,6 +270,7 @@ export class Pathfinding extends Component {
         this.highlightP = setInterval(() => {
             if(i >= path.length - 1) {
                 console.log(i)
+                this.props.setSettings({findPath: false})
                 clearInterval(this.highlightP)
             }
             tempPath.push(path[i])
@@ -275,6 +291,7 @@ export class Pathfinding extends Component {
         clearInterval(this.alg)
         clearInterval(this.alg2)
         clearInterval(this.highlightP)
+        clearInterval(this.gcn)
     }
 }
 export default Pathfinding

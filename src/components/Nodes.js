@@ -7,6 +7,8 @@ export class Nodes extends Component {
             return true
         }else if(this.props.nodes !== nextProps.nodes) {
             return true
+        }else if(this.props.colors !== nextProps.colors) {
+            return true
         }else if(this.props.path === nextProps.path && this.props.zoom === nextProps.zoom) {
             return false
         } else return true
@@ -43,7 +45,7 @@ export class Nodes extends Component {
                     }
                 } 
                 return cells.map(cell => {
-                    return <div className='node' style={{position: 'absolute', left: cell.x, top:cell.y}}/>
+                    return <div className='node' style={{position: 'absolute', left: cell.x, top:cell.y, backgroundColor:this.props.colors.path}}/>
                 })
             }
         })
@@ -54,8 +56,8 @@ export class Nodes extends Component {
                 return this.props.nodes.map(node => {
                     if(node.highlighted) {
                         const cellPos = this.getCellPosition(`CELL${node.row}-${node.column}`)
-                        console.log(cellPos)
-                        return <div className='node' style={{position: 'absolute', left:cellPos.x, top:cellPos.y}}/>
+                        console.log(this.props.colors.path)
+                        return <div className='node' style={{position: 'absolute', left:cellPos.x, top:cellPos.y, backgroundColor:this.props.colors.path}}/>
                     }
                 })
             } else if(this.props.path !== null) {

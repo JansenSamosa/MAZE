@@ -1,11 +1,13 @@
 .parent {
     position: relative;
-    overflow: auto;
-    margin-bottom:500px;
-    margin-top:40px;
+    margin: auto;
+    margin-top: 200px;
+    z-index: -5;
 }
 .grid {  
-    margin:auto;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
 }
 .grid-cell {
     width: 30px;
@@ -17,7 +19,7 @@
 .node {
     width: 30px;
     height: 30px;
-    background-color: pink;
+
     opacity: .5;
     margin: auto;
     position: relative;

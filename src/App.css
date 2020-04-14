@@ -1,3 +1,33 @@
+* {
+  font-family: 'Bahnschrift';
+    color: #707070;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
 .App {
-  text-align: center;
+  
+}
+.screenbtns img {
+  position: fixed;
+  width:10em;
+  cursor: pointer;
+  transition: width 100ms;
+}
+.screenbtns img:hover {
+  position: fixed;
+  width:11em
+}
+.screenbtns img[name='zoomin'] {
+  bottom:3em;
+  right:-2.5em;
+}
+.screenbtns img[name='zoomout'] {
+  bottom:0;
+  right:-2.5em;
 }
