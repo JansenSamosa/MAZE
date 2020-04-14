@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import seedrandom from 'seedrandom'
 
 import Settings from './components/Settings'
 import MazeGenerator from './components/MazeGenerator.js'
@@ -69,7 +68,7 @@ export class App extends Component {
   startZoom = zoomfactor => {
     this.zoominterval = setInterval(() => {
       this.zoom(zoomfactor)
-    },1)
+    },5)
   }
   endZoom = () => {
     clearInterval(this.zoominterval)
