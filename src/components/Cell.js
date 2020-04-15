@@ -24,6 +24,9 @@ export class Cell extends Component {
         const isCurrent = this.props.cell === this.props.stackLast ? true : false
         console.log(this.props.colors)
         let borderColor = chroma(this.props.colors.cell).darken(1.5).saturate(2)
+        if(this.props.colors.cell==='#000000') {
+            borderColor = '#000000'
+        }
         let backgroundColor = this.props.colors.cell//'#ffb3b3'
         
         if(this.props.cell.inStack) {borderColor=chroma(this.props.colors.stackcell).darken(1.5).saturate(2); backgroundColor=this.props.colors.stackcell}
