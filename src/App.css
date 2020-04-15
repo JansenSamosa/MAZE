@@ -10,9 +10,7 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
-.App {
-  
-}
+
 .screenbtns img {
   position: fixed;
   width:10em;

@@ -52,15 +52,7 @@ export class Nodes extends Component {
     }
     renderNodes = () => {
         if(this.props.showNodes) {
-            if(this.props.nodes !== null && this.props.path === null) {
-                return this.props.nodes.map(node => {
-                    if(node.highlighted) {
-                        const cellPos = this.getCellPosition(`CELL${node.row}-${node.column}`)
-                        console.log(this.props.colors.path)
-                        return <div className='node' style={{position: 'absolute', left:cellPos.x, top:cellPos.y, backgroundColor:this.props.colors.path}}/>
-                    }
-                })
-            } else if(this.props.path !== null) {
+            if(this.props.path !== null) {
                 return this.renderPath()
             }
         }
