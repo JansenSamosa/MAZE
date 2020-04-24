@@ -56,11 +56,6 @@ export class App extends Component {
       this.setState({...this.state, win: true})
     }
   }
-  renderWin = () => {
-    if(this.state.win) {
-      return <p>You win!</p>
-    }
-  }
   zoom = zoomfactor => {
     if(parseInt(this.state.zoom) + zoomfactor > 0) {
       this.setState({...this.state, zoom: `${parseInt(this.state.zoom) + zoomfactor}`, showNodes: false}, () => {
@@ -150,7 +145,6 @@ export class App extends Component {
                 onTouchEnd={this.endZoom}/>
           <button onClick={() => this.setState({...this.state, showProcess: !this.state.showProcess})}name='showProcess'>SHOW/HIDE PROCESS</button>
         </div>
-        {this.renderWin()}
         {this.generateMaze()}
         {this.startPathfinding()}
       </div>
