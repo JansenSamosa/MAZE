@@ -51,7 +51,10 @@ export class App extends Component {
     this.setState({...this.state, player})
   }
   setWin = () => {
-    this.setState({...this.state, win: true})
+    if(!this.state.win) {
+      window.alert('You win!')
+      this.setState({...this.state, win: true})
+    }
   }
   renderWin = () => {
     if(this.state.win) {
